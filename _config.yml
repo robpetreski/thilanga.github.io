@@ -1,0 +1,30 @@
+# Dependencies
+markdown:         redcarpet
+highlighter:      pygments
+
+# Permalinks
+permalink:        pretty
+
+# Setup
+title:            Thilanga Pitigala
+tagline:          "Thilanga's IO"
+description:      'Base theme for Jekyll themes'
+url:              thilanga.github.com
+
+author:
+  name:           'Thilanga Pitigala'
+  url:            https://twitter.com/tpitigala
+
+paginate:         1
+
+# Custom vars
+version:          1.0.0
+
+github:
+  repo:           github.com/thilanga/thilanga.github.com
+
+# This is the list of pages to incldue in the header of the website.
+pages_list:
+  About: '/about'
+  Archive: '/archive'
+  Feed: '/atom.xml'

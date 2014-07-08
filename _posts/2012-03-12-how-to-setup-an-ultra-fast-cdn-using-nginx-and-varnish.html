@@ -1,0 +1,96 @@
+---
+layout: post
+title: How to setup an ultra-fast CDN using Nginx and Varnish
+date: 2012-03-12
+comments: false
+---
+
+
+<div class='post'>
+    <div dir="ltr" style="text-align: left;" trbidi="on">If your website takes more than 3 seconds to load, there is a
+        big chance to loose your site visitors and that is a risk we are dealing with today due to the big&nbsp;competition
+        in the industry.<br/>
+
+        <div><br/></div>
+        <div>There are lots of reasons which effects on the site's speed.&nbsp;</div>
+        <div>
+            <ol style="text-align: left;">
+                <li>Large multimedia contents</li>
+                <li>DNS look up issue</li>
+                <li>Server&nbsp;response&nbsp;time&nbsp;</li>
+                <li>Multiple redirects</li>
+            </ol>
+            <div>are few from a lengthy list.</div>
+        </div>
+        <div><br/></div>
+        <div>If you are using a good CDNs to serve contents, then that will give a good boost while loading the site.
+            Last month I had&nbsp;to setup up Our own CDN for <a href="http://wso2.org/" target="_blank">WSO2 Oxygentank
+                Developer Portal</a>&nbsp;and i'm trying to summaries steps that I&nbsp;followed.
+        </div>
+        <div><br/></div>
+        <div><b>Installing Nginx and varnish</b></div>
+        <div><br/></div>
+        <div>
+            <ol style="text-align: left;">
+                <li>apt-get install nginx</li>
+                <li>apt-get install varnish</li>
+            </ol>
+            <div><b>Nginx Config</b><br/><br/>
+                <ul style="text-align: left;">
+                    <li><b>(</b>/etc/nginx/sites-enabled/default<b>)</b>server {<br/>&nbsp; &nbsp; &nbsp; &nbsp;open_file_cache_valid
+                        20m;<br/>&nbsp; &nbsp; &nbsp; &nbsp; listen 81;<br/>&nbsp; &nbsp; &nbsp; &nbsp; server_name
+                        mydomain.com;<br/>&nbsp; &nbsp; &nbsp; &nbsp; access_log &nbsp;
+                        /var/log/cdn/mydomain.com/logs/access.log;<br/>&nbsp; &nbsp; &nbsp; &nbsp; root &nbsp;
+                        /cdn_document_path/;<br/><br/>&nbsp; &nbsp; &nbsp; &nbsp; location ~*
+                        \.(gif|jpg|jpeg|png|wmv|avi|mpg|mpeg|mp4|htm|html|js|css|mp3|swf|ico|flv)$ {<br/>&nbsp; &nbsp;
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; open_file_cache_valid
+                        120m;<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        expires&nbsp;<span
+                                style="background-color: white; color: #323232; font-family: Tahoma, Verdana, Arial, Helvetica, 'Bitstream Vera Sans', sans-serif; font-size: 13px; line-height: 16px; text-align: -webkit-auto;">7d</span>;<br/>&nbsp;
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; open_file_cache&nbsp;max=1000
+                        inactive=20s<br/>&nbsp; &nbsp; &nbsp; &nbsp; }<br/>&nbsp; &nbsp; &nbsp; &nbsp; <br/>&nbsp;
+                        &nbsp; &nbsp; &nbsp; &nbsp;location = /50x.html {<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; root &nbsp; /var/www/nginx-default;<br/>&nbsp; &nbsp;
+                        &nbsp; &nbsp; }<br/><br/>&nbsp; &nbsp; &nbsp; &nbsp; # No access to .htaccess files.<br/>&nbsp;
+                        &nbsp; &nbsp; &nbsp; location ~ /\.ht {<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; deny
+                        &nbsp;all;<br/>&nbsp; &nbsp; &nbsp; &nbsp; }<br/>}
+                    </li>
+                </ul>
+                <br/><br/><b>Varnish Config</b><br/><br/>
+                <ul style="text-align: left;">
+                    <li><b>(</b>/etc/default/varnish<b>)</b>START=yes<br/>NFILES=131072<br/>MEMLOCK=82000<br/>INSTANCE=$(uname
+                        -n)<br/>DAEMON_OPTS="-a :80 \<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-T
+                        localhost:6082 \<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-f /etc/varnish/default.vcl
+                        \<br/>&nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-S /etc/varnish/secret \<br/>&nbsp; &nbsp;
+                        &nbsp; &nbsp; &nbsp; &nbsp; &nbsp;-s file,/var/lib/varnish/$INSTANCE/varnish_storage.bin,1G"
+                    </li>
+                    <li><b>(</b>/etc/varnish/default.vcl<b>)</b>backend default {<br/>&nbsp; &nbsp; .host = "127.0.0.1";<br/>&nbsp;
+                        &nbsp; .port = "81";<br/>}<br/><br/>sub vcl_recv {<br/><span class="Apple-tab-span"
+                                                                                     style="white-space: pre;"> </span>if
+                        (req.url ~ “\.(js|css|jpg|jpeg|png|gif|gz|tgz|bz2|tbz|mp3|ogg|swf)$”) {<br/><span
+                                class="Apple-tab-span" style="white-space: pre;">  </span>return (lookup);<br/><span
+                                class="Apple-tab-span" style="white-space: pre;"> </span>}<br/>}<br/><br/>sub vcl_fetch
+                        {<br/><span class="Apple-tab-span" style="white-space: pre;"> </span>if (req.url ~
+                        “\.(js|css|jpg|jpeg|png|gif|gz|tgz|bz2|tbz|mp3|ogg|swf)$”) {<br/><span class="Apple-tab-span"
+                                                                                               style="white-space: pre;">  </span>unset
+                        obj.http.set-cookie;<br/><span class="Apple-tab-span" style="white-space: pre;"> </span>}<br/>}
+                    </li>
+                </ul>
+                <div><b>Start Nginx and Varnish</b></div>
+                <div>
+                    <ol style="text-align: left;">
+                        <li>/etc/init.d/nginx start</li>
+                        <li>/etc/init.d/varnish restart</li>
+                    </ol>
+                    <div>Once you start Nginx and Varnish.&nbsp;Varnish&nbsp;will start to server port 80&nbsp;web
+                        traffic. If it is a static content varnish will server and nginx will look&nbsp;after&nbsp;all
+                        dynamic contents.
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+<h2>Comments</h2>
+<div class='comments'>
+</div>

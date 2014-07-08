@@ -1,0 +1,123 @@
+---
+layout: post
+title: Drupal scaling and performance tuning - Part 1
+date: 2011-09-29
+comments: false
+---
+
+
+<div class='post'>
+    <div dir="ltr" style="text-align: left;" trbidi="on">
+        <div>As WSO2Con 2011 was a huge hit in IT sector, I had to face a problem with<a href="http://wso2.org/">
+            wso2.org</a> (Oxygentank developer Portal). Which site&nbsp;couldn't&nbsp;handle a large traffic constantly.
+        </div>
+        <div><br/></div>
+        <div>The old system we had was NGINX (Load&nbsp;Balancer) fronted 4 Drupal nodes which was&nbsp;running&nbsp;with&nbsp;Apache2.
+            with master - master&nbsp;MySQL&nbsp;replication.
+        </div>
+        <div><br/></div>
+        <div>But during a&nbsp;high-traffic&nbsp;Our servers got more than 1&nbsp;minute (average) time&nbsp;to response&nbsp;&nbsp;on
+            a request. As &nbsp;NGINX's fail&nbsp;timeout&nbsp;for 45 seconds, users got 504 Gateway timeout most of the
+            time. Same time&nbsp;Apache&nbsp;server load went above 30 - 70.
+        </div>
+        <div><br/></div>
+        <div>First as a quick solution we spinned new 2 servers and routed the load across them. That helped us to cater
+            for few hours but again there was a huge delay when site was loading.&nbsp;Then we found that&nbsp;MySQL&nbsp;server
+            load also gone up and&nbsp;process-list&nbsp;has grown.
+        </div>
+        <div><br/></div>
+        <div>Then I found that MySQL&nbsp;Server take time process&nbsp;queries&nbsp;than it was before. Root cause&nbsp;for
+            this new problem was 6 drupal nodes had started stress MySQL&nbsp;servers&nbsp;continually.
+        </div>
+        <div><br/></div>
+        <div>Then I started to ask some&nbsp;questioned by my self.&nbsp;</div>
+        <div><br/></div>
+        <div style="text-align: left;"><b>1.&nbsp;OK, Then why we didn't see this new&nbsp;problem&nbsp;before we plug
+            new nodes?</b><br/><b><span class="Apple-style-span" style="font-weight: normal;">Answer was simple, Drupal nodes&nbsp;couldn't&nbsp;stress the DB as it got self killed (Frozen) during high traffics.</span></b>
+        </div>
+        <div style="text-align: left;"><b><span class="Apple-style-span" style="font-weight: normal;"><br/></span></b>
+        </div>
+        <div style="text-align: left;">Before jump in the Apache, Our WSO2 Infrastructure team&nbsp;revisit our
+            monitoring systems (Ganglia) and found that servers were&nbsp;running&nbsp;on swap most of the time
+        </div>
+        <div style="text-align: left;"><b><span class="Apple-style-span" style="font-weight: normal;"><br/></span></b>
+        </div>
+        <div style="text-align: left;">As a solution I stated to tune up the&nbsp;Apache to avoid memory swapping&nbsp;problem.
+            Then I saw that there was some miss configurations which take more&nbsp;memories when Apache process start
+            to handle the traffic.&nbsp;Due to that configuration server can easily&nbsp;excused.&nbsp;</div>
+        <div style="text-align: left;"><br/></div>
+        <div style="text-align: left;"><b style="color: red;">MaxClients </b>as was one of a major key parameter I had
+            to change during the Apache memory optimization process<br/><br/></div>
+        <div style="text-align: left;"></div>
+        <div style="text-align: left;"><b>Apache Memory Optimization &nbsp;</b></div>
+        <div style="text-align: left;">
+            <ol style="text-align: left;">
+                <li>Find the non-swapped physical memory&nbsp;Apache&nbsp;has used (<b>RES</b>)</li>
+                <ol>
+                    <li>Run <b>top </b>command and press <b>shift </b>+ <b>m </b>to
+                        find&nbsp;highest&nbsp;&nbsp;<b>RES</b> value which is&nbsp;Apache&nbsp;process use
+                    </li>
+                </ol>
+                <li>Find the AVAILABLE APACHE MEMORY POOL.</li>
+                <ol>
+                    <li>Run&nbsp;<b>service apache2 stop </b>and type <b>free -m</b></li>
+                    <li>Note the&nbsp;<b>used </b>memory and&nbsp;Subtract it from&nbsp;<b>total (</b>This will give you
+                        the FREE MEMORY POOL<b>)</b></li>
+                    <li>Multiply&nbsp;MEMORY POOL by <b>0.8</b>&nbsp;to find the average AVAILABLE APACHE POOL (This
+                        will allow server &nbsp;20% memory reserve for burst periods)
+                    </li>
+                </ol>
+                <li>Calculate&nbsp;MaxClients</li>
+                <ol>
+                    <li>Divide AVAILABLE APACHE POOL by the highest <b>RES</b> memory used by Apache (Step 1). Now we
+                        have&nbsp;<b><span class="Apple-style-span"
+                                           style="font-weight: normal;"><b>MaxClients</b></span>&nbsp;</b>number
+                    </li>
+                    <li>Open apache2.conf and change&nbsp;<b>MaxClients </b>value</li>
+                </ol>
+                <li>Other tweaks</li>
+                <ol>
+                    <li>Set <b>Keepalive On </b>(keep it <b>off</b> if you&nbsp;haven't keep 20% memory&nbsp;reserve.&nbsp;)
+                    </li>
+                    <li>set <b>keepalivetimeout</b> to the lowest value (This will prevent connection hanging, If you
+                        experience high latency to your server, set it to 2-5 seconds)
+                    </li>
+                    <li>Set your <b>Timeout</b> to a reasonable value like 10 - 40 (Keep it low)</li>
+                    <li>set <b>MaxKeepAliveRequests</b> with in&nbsp;70-150 (If you have a good idea about objects in a
+                        1 page set it to match the object count)
+                    </li>
+                    <li>Set <b>MinSpareServers</b> equal to 10-25% of <b>MaxClients</b></li>
+                    <li>Set <b>MaxSpareServers</b> equal to 25-50% of <b>MaxClients</b></li>
+                    <li>Set <b>StartServers</b> equal to&nbsp;<b>MaxSpareServers</b></li>
+                    <li>Set <b>MaxRequestsPerChild</b>&nbsp;somewhere between 400 - 700&nbsp;(if you see rapid Apache
+                        child process memory use growth) to 10000
+                    </li>
+                </ol>
+                <li>Apply Changes to Apache</li>
+                <ol>
+                    <li>Run&nbsp;<b>service apache2 start</b></li>
+                </ol>
+            </ol>
+            <div>Once I restart our servers with above setting, server could handle 150% traffic from Apache end and
+                server load was always below 2 (in a burst&nbsp;server-load&nbsp;was 1-2)
+            </div>
+            <div><br/></div>
+            <div>This solved my&nbsp;Apache hanging problem. Then I ran a another load test to verify my setting. I was
+                amazed with the&nbsp;improvement but that haven't solved my problem.&nbsp;</div>
+            <div><br/></div>
+            <div>server is taking bit long to&nbsp;response but I didn't see connection drop.</div>
+            <div><br/></div>
+            <div><br/></div>
+            <div><b>2. Now, What is wrong with my settings, Why server response is slow</b>&nbsp;? <b><span
+                    class="Apple-style-span" style="color: red;">MySQL!!</span></b>&nbsp;</div>
+            <div><br/></div>
+            <div>I will discuss in part 2, how I&nbsp;addressed&nbsp;this problem .</div>
+        </div>
+        <div><br/></div>
+        <div><br/></div>
+        <div><br/></div>
+    </div>
+</div>
+<h2>Comments</h2>
+<div class='comments'>
+</div>

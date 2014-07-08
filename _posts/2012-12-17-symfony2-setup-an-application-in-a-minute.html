@@ -1,0 +1,49 @@
+---
+layout: post
+title: Symfony2 - Setup an Application in a minute
+date: 2012-12-17
+comments: false
+---
+
+
+<div class='post'>
+    <div dir="ltr" style="text-align: left;" trbidi="on">
+        <div dir="ltr" style="text-align: left;" trbidi="on">
+            <div dir="ltr" style="text-align: left;" trbidi="on">
+                <div dir="ltr" style="text-align: left;" trbidi="on">
+                    <div dir="ltr" style="text-align: left;" trbidi="on"><h2 style="text-align: left;">1. Download</h2>
+
+                        <div>Download the Symfony Standard Edition from&nbsp;<a href="http://symfony.com/download">http://symfony.com/download</a>&nbsp;(at
+                            the moment of writing this post latest stable version is 2.1)<br/><br/>
+                            <pre class="brush:bash">cd /home/user/Downloads/<br/>wget --content-disposition 'http://symfony.com/download?v=Symfony_Standard_Vendors_2.1.4.tgz'<br/>tar -zxvf Symfony_Standard_Vendors_2.1.4.tgz<br/>mv Symfony /var/www/symfony<br/></pre>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <br/>Then Point&nbsp;/var/www/symfony/web directory to the your web server<br/>
+
+        <h2>2. Configuration</h2><br/>
+
+        <div>Now We are going to use app.php as the main index file&nbsp;instead&nbsp;of playing with app_dev.php within
+            the development enviroment.
+        </div>
+        <div><br/></div>
+        <pre class="brush:bash">vim web/app.php<br/></pre>
+        <div><br/></div>
+        <div>Replace your app.php with the below code</div>
+        <div><br/></div>
+        <pre class="brush:php"><br/><br/>// Make group permissions stick in cache/log dirs<br/>umask(0002);<br/><br/>use Symfony\Component\ClassLoader\ApcClassLoader;<br/>use Symfony\Component\HttpFoundation\Request;<br/><br/>$loader = require_once __DIR__.'/../app/bootstrap.php.cache';<br/>require_once __DIR__.'/../app/AppKernel.php';<br/><br/>$env = 'prod';<br/><br/>if (isset($_SERVER['HTTP_HOST'])) {<br/>&nbsp; &nbsp; if (preg_match('/(localhost|local\.)/', $_SERVER['HTTP_HOST'])) {<br/>&nbsp; &nbsp; &nbsp; &nbsp; $env = 'dev';<br/>&nbsp; &nbsp; }<br/>}<br/><br/>$kernel = new AppKernel($env, $env == 'dev');<br/>$kernel-&gt;loadClassCache();<br/>$request = Request::createFromGlobals();<br/>$response = $kernel-&gt;handle($request);<br/>$response-&gt;send();<br/>$kernel-&gt;terminate($request, $response);<br/><br/></pre>
+        <div>Load your Symfony site by typing http://localhost/symfony in your web browser<br/></div>
+        <div>Now you can access Symfony&nbsp;Development&nbsp;environment&nbsp;without visiting to app_dev.php.</div>
+        <div></div>
+        <br/><br/>
+
+        <div><br/></div>
+        <br/><br/>
+        <script src="http://crux-framework-tools.googlecode.com/svn/trunk/misc/highlight/highlightLoader.js"></script>
+    </div>
+</div>
+<h2>Comments</h2>
+<div class='comments'>
+</div>

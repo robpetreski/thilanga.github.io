@@ -1,0 +1,1 @@
+This is the personal website of Thilanga Pitigala hosted by [GitHub Pagse](http://pages.github.com).
