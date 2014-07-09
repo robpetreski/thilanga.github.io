@@ -23,7 +23,7 @@ paginate:         2
 version:          1.0.0
 
 github:
-  repo:           github.com/thilanga/thilanga.github.com
+  repo:           github.com/thilanga/thilanga.github.io
 
 # This is the list of pages to incldue in the header of the website.
 pages_list:
