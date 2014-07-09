@@ -1,5 +1,7 @@
 # Dependencies
-markdown:         redcarpet
+markdown: redcarpet2
+redcarpet:
+  extensions: ["no_intra_emphasis", "fenced_code_blocks", "autolink", "tables",     "with_toc_data"]
 highlighter:      pygments
 
 # Permalinks
@@ -9,13 +11,13 @@ permalink:        pretty
 title:            Thilanga Pitigala
 tagline:          "IO"
 description:      ''
-url:              thilanga.github.com
+url:              thilanga.github.io
 
 author:
   name:           'Thilanga Pitigala'
   url:            https://twitter.com/tpitigala
 
-paginate:         1
+paginate:         2
 
 # Custom vars
 version:          1.0.0
