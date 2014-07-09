@@ -89,7 +89,7 @@ In this blog post I'm trying to demonstrate the option 2 (load different templat
                     {% block content %}
                     Hello Desktop !
                 {% endblock %}
-            css
+            {% endraw %}
         ```
 
 3. Create a Service using RequestListener
@@ -105,6 +105,7 @@ In this blog post I'm trying to demonstrate the option 2 (load different templat
             }
     ```
     - Run
+
         ```bash
             php app/console container:debug | grep acme.listener.request
         ```
