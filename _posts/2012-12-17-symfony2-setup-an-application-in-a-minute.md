@@ -3,6 +3,7 @@ layout: post
 title: Symfony2 - Setup an Application in a minute
 date: 2012-12-17
 comments: true
+tags: Framework , Howtos , Symfony2 , Tutorial
 ---
 
 1. Download
