@@ -4435,3 +4435,7 @@ a.badge:hover {
 .step-content .active {
     display: block;
 }
+
+.row {
+    border-bottom: 1px solid #eee;
+}
