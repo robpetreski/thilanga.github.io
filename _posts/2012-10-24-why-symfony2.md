@@ -3,7 +3,7 @@ layout: post
 title: Why Symfony2?
 date: 2012-10-24
 comments: true
-tags: Framework , oop , php , Symfony2
+tags: Framework oop php Symfony2
 ---
 
 With the PHP5 there was a big hype in PHP frameworks and MVC pattern. As a result,

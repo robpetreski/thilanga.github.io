@@ -3,6 +3,7 @@ layout: post
 title: Test Credit Card Numbers for Payment Gateways
 date: 2013-11-21
 comments: true
+tags: magento
 ---
 
 >Notes to Myself

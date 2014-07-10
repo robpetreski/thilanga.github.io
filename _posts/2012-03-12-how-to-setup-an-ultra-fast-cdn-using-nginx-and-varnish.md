@@ -3,7 +3,7 @@ layout: post
 title: How to setup an ultra-fast CDN using Nginx and Varnish
 date: 2012-03-12
 comments: true
-tags: cdn , nginx , varnish
+tags: cdn nginx varnish
 ---
 
 If your website takes more than 3 seconds to load, there is a big chance to loose your site visitors and that is a risk

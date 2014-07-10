@@ -3,7 +3,7 @@ layout: post
 title: Symfony2 - Load different templates based on user agent
 date: 2012-12-19
 comments: true
-tags: Howtos , Mobile , Request Listener , Symfony2 , Templates , Tutorial
+tags: Howtos Mobile Request Listener Symfony2 Templates Tutorial
 ---
 
 If you want to load different templates for different user agents while keeping the same backend code base,
