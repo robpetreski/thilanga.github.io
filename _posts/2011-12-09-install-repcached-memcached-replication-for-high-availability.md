@@ -3,6 +3,7 @@ layout: post
 title: Install Repcached (Memcached Replication) For High-Availability
 date: 2011-12-09
 comments: true
+tags: repcached memcached replication
 ---
 
 When you have a dynamic website which handles lots of user queries, as a Web Master my top priorities are to keep the site
@@ -50,257 +51,175 @@ Repcached helps to keep redundancy memcached system and that was the solution I 
 - chmod +x /etc/init.d/memcacherep
 - update-rc.d memcachedrep defaults
 
->Copy / Past code1 to step 1
+>default configuration (`/etc/memcachedrep`)
+
 ```bash
+## extra commandline options to start memcached in replicated mode
+# -x < ip_addr > hostname or IP address of the master replication server
+# -X < num > TCP port number of the master (default: 11212)
+DAEMON_ARGS="-m 128 -p 11211 -u root -P /var/run/memcachedrep.pid -d -x 10.100.1.10"
 ```
 
-                <div></div>
-                <div># -x &lt; ip_addr &gt; hostname or IP address of the master replication server</div>
-                <div># -X &lt; num &gt; TCP port number of the master (default: 11212)</div>
-                <div>DAEMON_ARGS="-m 128 -p 11211 -u root -P /var/run/memcachedrep.pid -d -x 10.100.1.10</div>
-            </div>
-        </div>
-        <div><br/></div>
-        <div><u>Copy / Past code2 to step 2</u></div>
-        <div>
-            <div>#! /bin/sh</div>
-            <div>### BEGIN INIT INFO</div>
-            <div># Provides:             memcached</div>
-            <div># Required-Start:       $syslog</div>
-            <div># Required-Stop:        $syslog</div>
-            <div># Should-Start:         $local_fs</div>
-            <div># Should-Stop:          $local_fs</div>
-            <div># Default-Start:        2 3 4 5</div>
-            <div># Default-Stop:         0 1 6</div>
-            <div># Short-Description:    memcached - Memory caching daemon replicated</div>
-            <div># Description:          memcached - Memory caching daemon replicated</div>
-            <div>### END INIT INFO</div>
-            <div># Author: Michael </div>
-            <div>#</div>
-            <div># Please remove the "Author" lines above and replace them</div>
-            <div># with your own name if you copy and modify this script.</div>
-            <div># Do NOT "set -e"</div>
-            <div># PATH should only include /usr/* if it runs after the mountnfs.sh script</div>
-            <div>PATH=/sbin:/usr/sbin:/bin:/usr/bin</div>
-            <div>DESC="memcachedrep"</div>
-            <div>NAME=memcached</div>
-            <div>DAEMON=/usr/local/bin/$NAME</div>
-            <div>DAEMON_ARGS="--options args"</div>
-            <div>PIDFILE=/var/run/memcachedrep.pid</div>
-            <div>SCRIPTNAME=/etc/init.d/$DESC</div>
-            <div>VERBOSE="yes"</div>
-            <div># Exit if the package is not installed</div>
-            <div>[ -x "$DAEMON" ] || exit 0</div>
-            <div># Read configuration variable file if it is present</div>
-            <div>[ -r /etc/$DESC ] &amp;&amp; . /etc/$DESC</div>
-            <div># Load the VERBOSE setting and other rcS variables</div>
-            <div>. /lib/init/vars.sh</div>
-            <div># Define LSB log_* functions.</div>
-            <div># Depend on lsb-base (&gt;= 3.0-6) to ensure that this file is present.</div>
-            <div>. /lib/lsb/init-functions</div>
-            <div>#</div>
-            <div># Function that starts the daemon/service</div>
-            <div>#</div>
-            <div>do_start()</div>
-            <div>{</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># Return</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#   0 if daemon has been started
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#   1 if daemon was already running
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#   2 if daemon could not be
-                started
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>start-stop-daemon --start --quiet
-                --pidfile $PIDFILE --exec $DAEMON --test &gt; /dev/null \
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;">  </span>|| return 1</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>start-stop-daemon --start --quiet
-                --pidfile $PIDFILE --exec $DAEMON -- \
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;">  </span>$DAEMON_ARGS \</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;">  </span>|| return 2</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># Add code here, if necessary, that
-                waits for the process to be ready
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># to handle requests from services
-                started subsequently which depend
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># on this one.  As a last resort,
-                sleep for some time.
-            </div>
-            <div>}</div>
-            <div>#</div>
-            <div># Function that stops the daemon/service</div>
-            <div>#</div>
-            <div>do_stop()</div>
-            <div>{</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># Return</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#   0 if daemon has been stopped
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#   1 if daemon was already stopped
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#   2 if daemon could not be
-                stopped
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#   other if a failure occurred
-            </div>
-            <div>    start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --pidfile $PIDFILE --name $NAME
-            </div>
-            <div>    RETVAL="$?"</div>
-            <div>    [ "$RETVAL" = 2 ] &amp;&amp; return 2</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># Wait for children to finish too if
-                this is a daemon that forks
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># and if the daemon is only ever run
-                from this initscript.
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># If the above conditions are not
-                satisfied then add some other code
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># that waits for the process to drop all
-                resources that could be
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># needed by services started
-                subsequently.  A last resort is to
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># sleep for some time.</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>start-stop-daemon --stop --quiet
-                --oknodo --retry=0/30/KILL/5 --exec $DAEMON
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>[ "$?" = 2 ] &amp;&amp; return 2</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># Many daemons don't delete their
-                pidfiles when they exit.
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>rm -f $PIDFILE</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>return "$RETVAL"</div>
-            <div>}</div>
-            <div>#</div>
-            <div># Function that sends a SIGHUP to the daemon/service</div>
-            <div>#</div>
-            <div>do_reload() {</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># If the daemon can reload its
-                configuration without
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># restarting (for example, when it is
-                sent a SIGHUP),
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># then implement that here.</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>start-stop-daemon --stop --signal 1
-                --quiet --pidfile $PIDFILE --name $NAME
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>return 0</div>
-            <div>}</div>
-            <div>case "$1" in</div>
-            <div>  start)</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>[ "$VERBOSE" != no ] &amp;&amp;
-                log_daemon_msg "Starting $DESC" "$NAME"
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>do_start</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>case "$?" in</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;">  </span>0|1) [ "$VERBOSE" != no ] &amp;&amp;
-                log_end_msg 0 ;;
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;">  </span>2) [ "$VERBOSE" != no ] &amp;&amp;
-                log_end_msg 1 ;;
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>esac</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>;;</div>
-            <div>  stop)</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>[ "$VERBOSE" != no ] &amp;&amp;
-                log_daemon_msg "Stopping $DESC" "$NAME"
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>do_stop</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>case "$?" in</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;">  </span>0|1) [ "$VERBOSE" != no ] &amp;&amp;
-                log_end_msg 0 ;;
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;">  </span>2) [ "$VERBOSE" != no ] &amp;&amp;
-                log_end_msg 1 ;;
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>esac</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>;;</div>
-            <div>  #reload|force-reload)</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># If do_reload() is not implemented then
-                leave this commented out
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># and leave 'force-reload' as an alias
-                for 'restart'.
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#log_daemon_msg "Reloading $DESC"
-                "$NAME"
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#do_reload</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#log_end_msg $?</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#;;</div>
-            <div>  restart|force-reload)</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># If the "reload" option is implemented
-                then remove the
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span># 'force-reload' alias</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>log_daemon_msg "Restarting $DESC"
-                "$NAME"
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>do_stop</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>case "$?" in</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>  0|1)</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;">  </span>do_start</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;">  </span>case "$?" in</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;">   </span>0) log_end_msg 0 ;;</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;">   </span>1) log_end_msg 1 ;; # Old process is
-                still running
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;">   </span>*) log_end_msg 1 ;; # Failed to start
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;">  </span>esac</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;">  </span>;;</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>  *)</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>  <span class="Apple-tab-span"
-                                                                                             style="white-space: pre;"> </span>#
-                Failed to stop
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;">  </span>log_end_msg 1</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;">  </span>;;</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>esac</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>;;</div>
-            <div>  *)</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>#echo "Usage: $SCRIPTNAME
-                {start|stop|restart|reload|force-reload}" &gt;&amp;2
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>echo "Usage: $SCRIPTNAME
-                {start|stop|restart|force-reload}" &gt;&amp;2
-            </div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>exit 3</div>
-            <div><span class="Apple-tab-span" style="white-space: pre;"> </span>;;</div>
-            <div>esac</div>
-            <div>:</div>
-        </div>
-        <div><br/></div>
-        <div><b>Test the repcached</b></div>
-        <div><br/></div>
-        <div>In Server 1</div>
-        <div>
-            <ol style="text-align: left;">
-                <li>telnet 127.0.0.1 11211</li>
-                <li>set foo 0 0 3</li>
-                <li>bar</li>
-            </ol>
-            <div>In Server 2</div>
-        </div>
-        <div>
-            <ol style="text-align: left;">
-                <li>telnet 127.0.0.1 11211</li>
-                <li>get foo (You will get bar as the Output)</li>
-            </ol>
-        </div>
-    </div>
-</div>
-<h2>Comments</h2>
-<div class='comments'>
-</div>
+>init script (`/etc/init.d/memcachedrep`)
+
+```bash
+#! /bin/sh
+### BEGIN INIT INFO
+# Provides:             memcached
+# Required-Start:       $syslog
+# Required-Stop:        $syslog
+# Should-Start:         $local_fs
+# Should-Stop:          $local_fs
+# Default-Start:        2 3 4 5
+# Default-Stop:         0 1 6
+# Short-Description:    memcached - Memory caching daemon replicated
+# Description:          memcached - Memory caching daemon replicated
+### END INIT INFO
+# Author: Marcus Spiegel <marcus.spiegel@gmail.com>
+#
+# Please remove the "Author" lines above and replace them
+# with your own name if you copy and modify this script.
+# Do NOT "set -e"
+# PATH should only include /usr/* if it runs after the mountnfs.sh script
+PATH=/sbin:/usr/sbin:/bin:/usr/bin
+DESC="memcachedrep"
+NAME=memcached
+DAEMON=/usr/local/bin/$NAME
+DAEMON_ARGS="--options args"
+PIDFILE=/var/run/memcachedrep.pid
+SCRIPTNAME=/etc/init.d/$DESC
+VERBOSE="yes"
+# Exit if the package is not installed
+[ -x "$DAEMON" ] || exit 0
+# Read configuration variable file if it is present
+[ -r /etc/default/$DESC ] && . /etc/default/$DESC
+# Load the VERBOSE setting and other rcS variables
+. /lib/init/vars.sh
+# Define LSB log_* functions.
+# Depend on lsb-base (>= 3.0-6) to ensure that this file is present.
+. /lib/lsb/init-functions
+#
+# Function that starts the daemon/service
+#
+do_start()
+{
+	# Return
+	#   0 if daemon has been started
+	#   1 if daemon was already running
+	#   2 if daemon could not be started
+	start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON --test > /dev/null \
+		|| return 1
+	start-stop-daemon --start --quiet --pidfile $PIDFILE --exec $DAEMON -- \
+		$DAEMON_ARGS \
+		|| return 2
+	# Add code here, if necessary, that waits for the process to be ready
+	# to handle requests from services started subsequently which depend
+	# on this one.  As a last resort, sleep for some time.
+}
+#
+# Function that stops the daemon/service
+#
+do_stop()
+{
+	# Return
+	#   0 if daemon has been stopped
+	#   1 if daemon was already stopped
+	#   2 if daemon could not be stopped
+	#   other if a failure occurred
+    start-stop-daemon --stop --quiet --retry=TERM/30/KILL/5 --pidfile $PIDFILE --name $NAME
+    RETVAL="$?"
+    [ "$RETVAL" = 2 ] && return 2
+	# Wait for children to finish too if this is a daemon that forks
+	# and if the daemon is only ever run from this initscript.
+	# If the above conditions are not satisfied then add some other code
+	# that waits for the process to drop all resources that could be
+	# needed by services started subsequently.  A last resort is to
+	# sleep for some time.
+	start-stop-daemon --stop --quiet --oknodo --retry=0/30/KILL/5 --exec $DAEMON
+	[ "$?" = 2 ] && return 2
+	# Many daemons don't delete their pidfiles when they exit.
+	rm -f $PIDFILE
+	return "$RETVAL"
+}
+#
+# Function that sends a SIGHUP to the daemon/service
+#
+do_reload() {
+	#
+	# If the daemon can reload its configuration without
+	# restarting (for example, when it is sent a SIGHUP),
+	# then implement that here.
+	#
+	start-stop-daemon --stop --signal 1 --quiet --pidfile $PIDFILE --name $NAME
+	return 0
+}
+case "$1" in
+  start)
+	[ "$VERBOSE" != no ] && log_daemon_msg "Starting $DESC" "$NAME"
+	do_start
+	case "$?" in
+		0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+		2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+	esac
+	;;
+  stop)
+	[ "$VERBOSE" != no ] && log_daemon_msg "Stopping $DESC" "$NAME"
+	do_stop
+	case "$?" in
+		0|1) [ "$VERBOSE" != no ] && log_end_msg 0 ;;
+		2) [ "$VERBOSE" != no ] && log_end_msg 1 ;;
+	esac
+	;;
+  #reload|force-reload)
+	#
+	# If do_reload() is not implemented then leave this commented out
+	# and leave 'force-reload' as an alias for 'restart'.
+	#
+	#log_daemon_msg "Reloading $DESC" "$NAME"
+	#do_reload
+	#log_end_msg $?
+	#;;
+  restart|force-reload)
+	#
+	# If the "reload" option is implemented then remove the
+	# 'force-reload' alias
+	#
+	log_daemon_msg "Restarting $DESC" "$NAME"
+	do_stop
+	case "$?" in
+	  0|1)
+		do_start
+		case "$?" in
+			0) log_end_msg 0 ;;
+			1) log_end_msg 1 ;; # Old process is still running
+			*) log_end_msg 1 ;; # Failed to start
+		esac
+		;;
+	  *)
+	  	# Failed to stop
+		log_end_msg 1
+		;;
+	esac
+	;;
+  *)
+	#echo "Usage: $SCRIPTNAME {start|stop|restart|reload|force-reload}" >&2
+	echo "Usage: $SCRIPTNAME {start|stop|restart|force-reload}" >&2
+	exit 3
+	;;
+esac
+:
+```
+####Test the repcached
+>In Server 1
+
+```bash
+telnet 127.0.0.1 11211
+set foo 0 0 3
+bar
+```
+>In Server 2
+
+```bash
+telnet 127.0.0.1 11211
+get foo #You will get bar as the Output
+```
