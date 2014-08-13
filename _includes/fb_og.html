@@ -28,10 +28,10 @@
 {% endif %}
 
 {% if page.image %}
-    <meta property="og:image" content="{{ site.url }}/assets/img/posts/{{ page.image }}"/>
+    <meta property="og:image" content="{{ page.url }}/assets/img/posts/{{ page.image }}"/>
 {% else %}
     <meta property="og:image" content="{{ site.url }}/assets/img/profile.jpg"/>
-{% endif
+{% endif %}
 
 {% if page.categories %}
     {% for category in page.categories limit:1 %}
