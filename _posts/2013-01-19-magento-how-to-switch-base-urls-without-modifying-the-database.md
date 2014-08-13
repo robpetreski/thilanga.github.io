@@ -3,7 +3,7 @@ layout: post
 title: Magento - How to switch Base URLs without modifying the Database
 date: 2013-01-19
 comments: true
-tags: eCommerce , magento , php
+tags: eCommerce magento php
 ---
 
 As Magento keeps its base URL in database, there is no easy way of accessing the same database from two different URLs
