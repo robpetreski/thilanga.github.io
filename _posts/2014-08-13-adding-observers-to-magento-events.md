@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Adding observers to Magento events
+title: Adding Observers to Magento Events
 date: 2014-08-13
 comments: true
 tags: magento
