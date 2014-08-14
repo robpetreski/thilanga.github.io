@@ -21,7 +21,7 @@ tags: magento
             <adminhtml_block_html_before> <!-- EVENT_TO_HOOK you want to bind with -->
                 <observers>
                     <adminhtml_block_html_before> <!-- Your unique tag name -->
-                        <class>August_Adminhtml_Model_observer</class>  <!-- Your custom Observer -->
+                        <class>Acme_Adminhtml_Model_observer</class>  <!-- Your custom Observer -->
                         <method>removeMassAction</method> <!--Method you want to trigger -->
                     </adminhtml_block_html_before>
                 </observers>
@@ -33,7 +33,7 @@ tags: magento
 ```
 <?php
 
-class August_Adminhtml_Model_Observer extends Varien_Object
+class Acme_Adminhtml_Model_Observer extends Varien_Object
 {
     public function removeMassAction($event) {
 
