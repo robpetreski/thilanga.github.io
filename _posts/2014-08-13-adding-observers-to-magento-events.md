@@ -1,7 +1,7 @@
 ---
 layout: post
 title: Adding Observers to Magento Events
-description: How to customize Magento's behaviour and flow using events and observer.
+description: How to customize Magento's behaviour and flow using events and observers.
 date: 2014-08-13
 comments: true
 tags: magento
