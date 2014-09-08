@@ -2,7 +2,7 @@
 layout: post
 title: How to override a Controller
 description: When you can't find an event or a module to customize Magento your only savior is controller. Let's have a look at how we can bend Magento by overriding controllers.
-date: 2014-08-13
+date: 2014-09-08
 comments: true
 tags: magento
 ---
