@@ -19,11 +19,12 @@ then we could keep database records with live settings.
 - app/etc/modules/My_Configurator.xml
 
 ```xml
+    <?xml version="1.0"?>
     <config>
         <modules>
           <my_configurator>
             <active>true</active>
-            <codepool>local</codepool>
+            <codePool>local</codePool>
           </my_configurator>
         </modules>
     </config>
@@ -31,6 +32,7 @@ then we could keep database records with live settings.
 - app/code/local/My/Configurator/etc/config.xml
 
 ```xml
+  <?xml version="1.0"?>
   <config>
     <global>
       <models>
@@ -57,7 +59,6 @@ then we could keep database records with live settings.
                 return str_replace('://'.$host.'/', '://'.$_SERVER['HTTP_HOST'].'/', $url);
             }
         }
-    ?>
 ```
 >Note: Make sure you disable this extension from production server as we want to run `getBaseUrl()` method from the Core.
 
