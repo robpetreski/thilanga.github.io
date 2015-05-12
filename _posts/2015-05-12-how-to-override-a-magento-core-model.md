@@ -25,13 +25,13 @@ If you observer the method you can see that there is only one event we can use `
 
 So as I explained above let's override the `addProduct`. By doing this we can have more flexibility around the code.
 
-##### Acme/Labelmaker/etc/config.xml
+##### Acme/Test/etc/config.xml
 ```
     <global> <!-- Magento Scope -->
         <models> 
             <checkout> <!-- Core module we want to override -->
                 <rewrite>
-                    <cart>Acme_Labelmaker_Model_Cart</cart> <!-- Module file we want to override -->
+                    <cart>Acme_Test_Model_Cart</cart> <!-- Module file we want to override -->
                 </rewrite>
             </checkout>
 
@@ -39,11 +39,11 @@ So as I explained above let's override the `addProduct`. By doing this we can ha
     </global>
 ```
 
-##### Acme/Labelmaker/Model/Cart.php
+##### Acme/Test/Model/Cart.php
 ```
 <?php
 
-class Acme_Labelmaker_Model_Cart extends Mage_Checkout_Model_Cart
+class Acme_Test_Model_Cart extends Mage_Checkout_Model_Cart
 {
     /**
      * Add product to shopping cart (quote)
