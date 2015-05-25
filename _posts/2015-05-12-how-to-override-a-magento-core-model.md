@@ -71,7 +71,7 @@ class Acme_Test_Model_Cart extends Mage_Checkout_Model_Cart
 
 <script>
   dataLayer.push('custom_event': 'loaded'{});
-  
+  console.log(dataLayer);
 </script>
 
 
