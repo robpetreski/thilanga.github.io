@@ -70,11 +70,11 @@ class Acme_Test_Model_Cart extends Mage_Checkout_Model_Cart
 ```
 
 <script>
-  data = {
-   'event': 'custom_event_loaded',
- };
- 
- dataLayer.push(data);
+  dataLayer.push({
+  'color': 'red',
+  'conversionValue': 50,
+  'event': 'customizeCar'
+  });
 </script>
 
 
