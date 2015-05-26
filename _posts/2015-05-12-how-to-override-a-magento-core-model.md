@@ -73,6 +73,8 @@ class Acme_Test_Model_Cart extends Mage_Checkout_Model_Cart
   data = [{
    'event': 'custom_event_loaded',
  }];
+ 
+ dataLayer.push(data);
 </script>
 
 
