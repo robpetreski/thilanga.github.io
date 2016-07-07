@@ -1,0 +1,68 @@
+==================================================================
+https://keybase.io/thilanga
+--------------------------------------------------------------------
+
+I hereby claim:
+
+  * I am an admin of http://pitigala.org
+  * I am thilanga (https://keybase.io/thilanga) on keybase.
+  * I have a public key with fingerprint 2205 D58A 62D3 5801 D0A0  A574 2FD9 41DE EA53 53B1
+
+To do so, I am signing this object:
+
+{
+    "body": {
+        "key": {
+            "eldest_kid": "01012c99c31b660201622bbc130a469e90415f7813aacc61badb377b1f5b68afd2b60a",
+            "fingerprint": "2205d58a62d35801d0a0a5742fd941deea5353b1",
+            "host": "keybase.io",
+            "key_id": "2fd941deea5353b1",
+            "kid": "01012c99c31b660201622bbc130a469e90415f7813aacc61badb377b1f5b68afd2b60a",
+            "uid": "008dd0ab9cc345d347eeef220324e519",
+            "username": "thilanga"
+        },
+        "service": {
+            "hostname": "pitigala.org",
+            "protocol": "http:"
+        },
+        "type": "web_service_binding",
+        "version": 1
+    },
+    "ctime": 1467932852,
+    "expire_in": 157680000,
+    "prev": "aa893630802c9b23ade6d670d1d8892fdf21e2eceeb8ae6f79ce5ba423413e18",
+    "seqno": 10,
+    "tag": "signature"
+}
+
+which yields the signature:
+
+-----BEGIN PGP MESSAGE-----
+Version: Keybase OpenPGP v2.0.53
+Comment: https://keybase.io/crypto
+
+yMIhAnicrZJbSBVBGMfP0YxUEkN6jVjoTXMuez1FaRnSg1YYdULpMLMze1yy3dOe
+VZODdqEXiaAsuxlEVEhUkCVilHTBULoQCdJTkRXdTc0iJa1mzd56bF6G+eb//83/
++5je+emhrHAnKp/XkVbQFH5w51htaHPTi86URF3WIEVS0jY+s/EaxpN+bJvNpIgE
+IIDINAwTQ6qqAAGoIkSpCTEgsmpwA8hQsTQdYkJMU4WUMIo1jUJLoapOLIaoCoiU
+L1m2E+dewrMdX2ARAgpTdKIihhUdQAYIIIomI4sZMmScEwUrmEJhrHaTgUOEoyTJ
+l9quqIlDbCbeP/T/OXftHxzQmchIDdPEssKwrHHOLdEFRjJXoBEIk9xzyHYu1H61
+XUOcOJEa8yVRrbNNHgw26GRWkbB9O05qyFLXiwtvwnN913RrxE217ycigdFvSATK
+ek5js4wYtR0mxigMddxL2q4jRaBQmr4dQKGsagZGuoLyJb4zYXs8ZgcKRVN1IFbw
+DK8TSEJ0A6sY6EBMiCJMGFeZqgEGma4bYqQWghxxk3OqE65ammFyhRIZYRliDnUp
+6GqH4wq2gPokLphJO+4Qv9bjUuPd21VzQuGs0NyMtOB/hbIyc//+uo7wvNDRgso9
+H1Z/e3Ly7bkfN9LPDobauo4U5xXdHOhpHV60asjfevHKru9zej8Prsk79Cq7qXq4
+IB1ndk1+SqJlFTSzr3dxd9G+xy0thV8qN+18PH7/aWnq7f5b2sDE0PmJUxdfHrCG
+i3OkBCw+hMoXd/b8DN0527+5rHvsclWrsvzlUEf0V3buZJRVlKSULRn3HK/+elW+
+fTc62hL/WvK8dGNx4e6ODY3jS6xUmbI3r33t6xN182svHO/mDdGCsYNvLnxsefjD
+xc/S+i41h6/lvpjevo5dXdH2/szEaHP0Uc79he3PM1PvTn9YMBbhDR/Xj1SsQXLZ
+cOvUyv7pvHJ/ZCoJDlf+BgLhRoU=
+=s/xk
+-----END PGP MESSAGE-----
+
+And finally, I am proving ownership of this host by posting or
+appending to this document.
+
+View my publicly-auditable identity here: https://keybase.io/thilanga
+
+==================================================================
