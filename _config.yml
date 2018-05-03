@@ -27,3 +27,5 @@ github:
 pages_list:
   Archive: '/archive'
   Feed: '/atom.xml'
+
+theme: jekyll-theme-hacker
