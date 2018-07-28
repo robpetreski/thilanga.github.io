@@ -1,5 +1,5 @@
 # Dependencies
-gems: [jekyll-paginate]
+plugins: [jekyll-paginate]
 rouge:      pygments
 
 # Permalinks
