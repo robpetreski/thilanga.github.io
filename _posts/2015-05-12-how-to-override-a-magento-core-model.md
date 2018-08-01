@@ -4,7 +4,7 @@ title: "How to override a Magento core model"
 date: 2015-05-12
 comments: true
 tags: magento
-description: Mdify/ alter data in magento within the default workflow by override a core model
+description: Modify/ alter data in magento within the default workflow by override a core model
 ---
 
 If you want to modify/ alter some of data in magento with in the default workflow you can achieve this in 2 ways.
