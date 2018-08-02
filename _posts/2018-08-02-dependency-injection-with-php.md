@@ -238,9 +238,10 @@ use Sample\MusicPlayer;
 use Sample\Services\Google\GoogleMusic;
 use Sample\Services\NoMusicService;
 use Sample\Services\Spotify\SpotifyMusic;
+use Illuminate\Container\Container;
 
-// Create new IoC Container instance
-$container = new Illuminate\Container\Container;
+// Get an instance of the IoC Container
+$container = Container::getInstance();
 
 $container->singleton(IMusicService::class, function ($app) {
     switch (strtolower($_GET['user'])) {
