@@ -97,7 +97,7 @@ Only there are two ways to support this with the current implementation.
     - Inject AppleMusic as an argument
     - Initiate AppleMusic object within the constructor
 
-2. Another issue is having to having to edit two files minimum (MusicPlayer class and AppleMusic class) 
+2. Another issue is having to edit two files minimum (MusicPlayer class and AppleMusic class) 
 
 #### Ok. Enough of bad approaches. What's a correct approach?
 `Dependency Injection is the correct approach here.`
