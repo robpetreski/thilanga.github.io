@@ -26,9 +26,9 @@ To explain the theory, I'll be building a simple music player that can be used a
 ### Objective
 Music player should be able to play music from user's preferred music service.
 
-#### ProTip: How to find dependencies to inject?
+#### ProTip: How to find which dependencies to inject?
 `If we look at the above requirement, the music services are on the strong side and the music player has less authority in making decisions.
-In this case we inject the music service to the music service.`
+In this case we inject the music service to the music player.`
 
 #### First let's start with a bad code to get it working.
 
@@ -45,7 +45,7 @@ class MusicPlayer
 ```
 
 If you look at the code above, someone might say `yeah that's dependency injection`. Not just injection.
-It's constructor injection. Because it injects the Object in to the Music player class using the constructor.
+It's constructor injection. Because it injects the object in to the Music player class using the constructor.
 
 We also can create the GoogleMusic object inside the MusicPlayer class.
 
@@ -60,7 +60,7 @@ class MusicPlayer
     }
 }
 ```
-This is not a dependency inject. It's regarded bad as GoogleMusic class is hard wired to the MusicPlayer class.
+This is not a depedependencyndency inject. It's regarded bad as GoogleMusic class is hard wired to the MusicPlayer class.
 
 Sad truth is, both code snippets above doing the same mistake. They are hard wired to the MusicPlayer class.
 Now Music class has become unusable for Spotify music service and only can be used by GoogleMusic.
