@@ -233,14 +233,16 @@ Once the IoC installation is done using the composer, we can create an IoC insta
 In our case loading different music service objects bases on different user preferences.
 
 ```php
+require __DIR__ . '/vendor/autoload.php';
+
+use Illuminate\Container\Container;
 use Sample\Contracts\IMusicService;
 use Sample\MusicPlayer;
 use Sample\Services\Google\GoogleMusic;
 use Sample\Services\NoMusicService;
 use Sample\Services\Spotify\SpotifyMusic;
-use Illuminate\Container\Container;
 
-// Get an instance of the IoC Container
+// Create new IoC Container instance
 $container = Container::getInstance();
 
 $container->singleton(IMusicService::class, function ($app) {
