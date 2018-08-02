@@ -62,8 +62,6 @@ class MusicPlayer
     }
 }
 ```
-This is not a depedependencyndency inject. It's regarded bad as GoogleMusic class is hard wired to the MusicPlayer class.
-
 Sad truth is, both code snippets above doing the same mistake. They are hard wired to the MusicPlayer class.
 Now Music class has become unusable for Spotify music service and only can be used by GoogleMusic.
 
