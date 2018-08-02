@@ -23,7 +23,7 @@ A dependency is an object that can be used (a service). An injection is the pass
 In this context an object (A) that expects another object's (B) help to complete a job that object (A) is responsible for.
 To explain the theory, I'll be building a simple music player that can be used against multiple music services like Google Music, Spotify, etc.
 
-### Requirements
+### Objective
 Music player should be able to play music from user's preferred music service.
 
 #### ProTip: How to find dependencies to inject?
