@@ -47,6 +47,8 @@ class MusicPlayer
 If you look at the code above, someone might say `yeah that's dependency injection`. Not just injection.
 It's constructor injection. Because it injects the object in to the Music player class using the constructor.
 
+This is not a good dependency injection. Because GoogleMusic class is hard wired to the MusicPlayer class.
+
 We also can create the GoogleMusic object inside the MusicPlayer class.
 
 ```php
