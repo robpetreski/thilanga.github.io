@@ -29,3 +29,5 @@ pages_list:
   Feed: '/atom.xml'
 
 theme: jekyll-theme-hacker
+
+github: [metadata]
